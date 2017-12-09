@@ -1,5 +1,5 @@
 import * as THREE from "three";
-
+import { CAMERA_LOOK_AT } from '../constants';
 class CameraController {
 
     constructor(camera, domElement){
@@ -11,6 +11,10 @@ class CameraController {
         }
 
         this.camera = camera;
+        this.camera.position.x = CAMERA_LOOK_AT.x;
+        this.camera.position.y = CAMERA_LOOK_AT.y;
+        this.camera.position.z = CAMERA_LOOK_AT.z;
+        
         this.calculateCameraPosition();
         this.registerMouseEvents(domElement);
     }
@@ -56,12 +60,16 @@ class CameraController {
     calculateCameraPosition = () => {
         const theta = this.cameraStartPosition.theta;
         const phi = this.cameraStartPosition.phi;
-        this.camera.position.x = this.cameraRadius * Math.sin( theta * Math.PI / 360 )
+        this.camera.position.x = CAMERA_LOOK_AT.x + this.cameraRadius * Math.sin( theta * Math.PI / 360 )
             * Math.cos( phi * Math.PI / 360 );
-        this.camera.position.y = this.cameraRadius * Math.sin( phi * Math.PI / 360 );
-        this.camera.position.z = this.cameraRadius * Math.cos( theta * Math.PI / 360 )
+        this.camera.position.y = CAMERA_LOOK_AT.y + this.cameraRadius * Math.sin( phi * Math.PI / 360 );
+        this.camera.position.z = CAMERA_LOOK_AT.z + this.cameraRadius * Math.cos( theta * Math.PI / 360 )
             * Math.cos( phi * Math.PI / 360 );
-        this.camera.lookAt(0,0,0);
+        this.camera.lookAt(
+            CAMERA_LOOK_AT.x,
+            CAMERA_LOOK_AT.y,
+            CAMERA_LOOK_AT.z
+        );
         this.camera.updateMatrix();
     }
 }
