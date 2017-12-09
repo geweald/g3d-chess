@@ -12,6 +12,6 @@ io.onOponentLeft(() => console.log("Oponent left"));
 io.emitReady();
 
 const game = ThreeScene();
-game.init(document.body);
+game.init(document.body, Game());
+game.subscribeOnClick((x, y) => console.log(x + '' + y));
 
-Game();

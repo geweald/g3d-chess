@@ -17,3 +17,16 @@ export const CAMERA_LOOK_AT = {
   y: 0,
   z: 3.5
 };
+
+
+export const COLORS = {
+  piece: {
+    White: 0xffffff,
+    Black: 0xf4a460
+  },
+  board: {
+    White: 0xffffff,
+    Black: 0xf4a460,
+    Fundament: 0x000000
+  }
+}

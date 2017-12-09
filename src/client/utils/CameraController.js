@@ -25,7 +25,6 @@ class CameraController {
   };
 
   onMouseDonw = event => {
-    event.preventDefault();
     this.mouseDown = true;
     this.mousePosition = {
       x: event.layerX,
@@ -36,12 +35,10 @@ class CameraController {
   };
 
   onMouseUp = event => {
-    event.preventDefault();
     this.mouseDown = false;
   };
 
   onMouseOver = event => {
-    event.preventDefault();
     if (!this.mouseDown) {
       return;
     }
@@ -50,7 +47,7 @@ class CameraController {
       this.mousePosition.theta;
     let phi =
       (event.clientY - this.mousePosition.y) * 0.5 + this.mousePosition.phi;
-    phi = Math.min(100, Math.max(0, phi));
+    phi = Math.min(100, Math.max(10, phi));
 
     this.cameraStartPosition.phi = phi;
     this.cameraStartPosition.theta = theta;
@@ -63,15 +60,15 @@ class CameraController {
     this.camera.position.x =
       CAMERA_LOOK_AT.x +
       this.cameraRadius *
-        Math.sin(theta * Math.PI / 360) *
-        Math.cos(phi * Math.PI / 360);
+      Math.sin(theta * Math.PI / 360) *
+      Math.cos(phi * Math.PI / 360);
     this.camera.position.y =
       CAMERA_LOOK_AT.y + this.cameraRadius * Math.sin(phi * Math.PI / 360);
     this.camera.position.z =
       CAMERA_LOOK_AT.z +
       this.cameraRadius *
-        Math.cos(theta * Math.PI / 360) *
-        Math.cos(phi * Math.PI / 360);
+      Math.cos(theta * Math.PI / 360) *
+      Math.cos(phi * Math.PI / 360);
     this.camera.lookAt(CAMERA_LOOK_AT.x, CAMERA_LOOK_AT.y, CAMERA_LOOK_AT.z);
     this.camera.updateMatrix();
   };

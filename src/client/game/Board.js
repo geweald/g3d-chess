@@ -17,7 +17,7 @@ const setMainRow = (pawnsRow, figures) => {
 };
 
 const createGameBoard = () => {
-  const board = Points.map(row => row.map(() => 0));
+  const board = new Array(8).fill(0).map(() => new Array(8).fill(0).map(() => 0));
 
   setMainRow(board[0], WhiteFigures);
   board[1] = board[1].map(p => WhiteFigures[Piece.Pawn]);
@@ -106,7 +106,7 @@ const getPossibleQueenMoves = (point, board) => {
 
 const getPossiblePawnMovesColor = (frontOne, { x, y }, board) => {
   const possibleMoves = [];
-  if (y === 1 && board[x][y + 2 * frontOne] === 0) {
+  if ((y === 1 || y == 6) && board[x][y + 2 * frontOne] === 0) {
     possibleMoves.push(board[x][y + 2 * frontOne]);
   }
   if (board[x][y + frontOne] === 0) {

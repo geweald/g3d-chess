@@ -1,5 +1,5 @@
 import * as THREE from "three";
-
+import { COLORS } from '../constants';
 class Piece {
   constructor() {
     this.loader = new THREE.JSONLoader();
@@ -10,7 +10,7 @@ class Piece {
       (obj, mat) => {
         this.model = new THREE.Mesh(
           obj,
-          new THREE.MeshLambertMaterial({ color: pieceColor })
+          new THREE.MeshLambertMaterial({ color: COLORS.piece[pieceColor] })
         );
         this.model.position.x = x;
         this.model.position.z = z;
@@ -20,7 +20,7 @@ class Piece {
         this.model.scale.z = scale;
         scene.add(this.model);
       },
-      xhr => {},
+      xhr => { },
       xhr => console.error("An error happened")
     );
   }
