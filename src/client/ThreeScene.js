@@ -1,6 +1,7 @@
 import * as THREE from "three";
-import { Board } from './chessPiece/Board'
-import { CameraController } from './utils/CameraController';
+import { Board } from "./chessPiece/Board";
+import { CameraController } from "./utils/CameraController";
+
 class ThreeScene {
   constructor() {
     this.scene = new THREE.Scene();
@@ -38,20 +39,20 @@ class ThreeScene {
     //spotLight.castShadow = true;
 
     this.scene.add(spotLight);
-  }
+  };
 
   initBoard = () => {
     // todo do nowych zmiennych stalych gdzies
     const scale = 1;
     const boardPositon = {
-      x:0,
-      y:0,
-      z:0
-    }
+      x: 0,
+      y: 0,
+      z: 0
+    };
 
     this.board = new Board(scale, boardPositon);
     this.board.appendToScene(this.scene);
-  }
+  };
 }
 
 export default () => new ThreeScene();
