@@ -12,8 +12,7 @@ class ThreeScene {
     );
 
     this.renderer = new THREE.WebGLRenderer();
-    this.renderer.shadowMapEnabled = true;
-    this.loader = new THREE.ObjectLoader();
+    this.renderer.shadowMap.enabled = true;
   }
 
   init = domElement => {
@@ -21,12 +20,6 @@ class ThreeScene {
     domElement.appendChild(this.renderer.domElement);
     this.scene.background = new THREE.Color(0xff0000);
     this.camera.position.z = 5;
-    this.loader.load(
-      "../assets/rook.json",
-      obj => this.scene.add(obj),
-      xhr => {},
-      xhr => console.error("An error happened")
-    );
     this.addLights();
     this.animate();
     this.initBoard();
@@ -39,16 +32,10 @@ class ThreeScene {
   };
 
   addLights = () => {
-    // const light = new THREE.PointLight(0xFFFFFF, 1, 100000);
-    // light.position.x = 10;
-    // light.position.y = 10;
-    // light.position.z = 20;
-    // light.intensity  = 0.5;
-    // this.scene.add(light);
     var spotLight = new THREE.SpotLight(0xffffff);
     spotLight.position.set(-40, 60, -10);
 
-    spotLight.castShadow = true;
+    //spotLight.castShadow = true;
 
     this.scene.add(spotLight);
   }
@@ -56,13 +43,13 @@ class ThreeScene {
   initBoard = () => {
     // todo do nowych zmiennych stalych gdzies
     const scale = 1;
-    const boardCenterPositon = {
+    const boardPositon = {
       x:0,
       y:0,
       z:0
     }
 
-    this.board = new Board(scale, boardCenterPositon);
+    this.board = new Board(scale, boardPositon);
     this.board.appendToScene(this.scene);
   }
 }

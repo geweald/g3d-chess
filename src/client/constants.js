@@ -6,3 +6,9 @@ export const PiecesEnum = {
   Knight: "Knight",
   Pawn: "Pawn"
 };
+
+export const CAMERA_LOOK_AT = {
+  x:3.5,
+  y:0,
+  z:3.5
+}
