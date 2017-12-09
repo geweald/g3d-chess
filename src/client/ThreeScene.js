@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { Board } from './chessPiece/Board'
-
+import { CameraController } from './utils/CameraController';
 class ThreeScene {
   constructor() {
     this.scene = new THREE.Scene();
@@ -12,6 +12,7 @@ class ThreeScene {
     );
 
     this.renderer = new THREE.WebGLRenderer();
+    this.renderer.shadowMapEnabled = true;
     this.loader = new THREE.ObjectLoader();
   }
 
@@ -28,6 +29,8 @@ class ThreeScene {
     );
     this.addLights();
     this.animate();
+    this.initBoard();
+    this.cameraController = new CameraController(this.camera, domElement);
   };
 
   animate = () => {
@@ -36,13 +39,18 @@ class ThreeScene {
   };
 
   addLights = () => {
-    const light = new THREE.PointLight(0x0040ff);
-    light.position.x = 10;
-    light.position.y = 10;
-    light.position.z = 20;
-    light.intensity  = 0.1;
-    this.initBoard();
-    this.scene.add(light);
+    // const light = new THREE.PointLight(0xFFFFFF, 1, 100000);
+    // light.position.x = 10;
+    // light.position.y = 10;
+    // light.position.z = 20;
+    // light.intensity  = 0.5;
+    // this.scene.add(light);
+    var spotLight = new THREE.SpotLight(0xffffff);
+    spotLight.position.set(-40, 60, -10);
+
+    spotLight.castShadow = true;
+
+    this.scene.add(spotLight);
   }
 
   initBoard = () => {
