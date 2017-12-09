@@ -14,7 +14,7 @@ class ThreeScene {
     this.loader = new THREE.ObjectLoader()
   }
   
-  init(domElement) {
+  init = (domElement) => {
     this.renderer.setSize(window.innerWidth, window.innerHeight)
     domElement.appendChild(this.renderer.domElement)
     this.scene.background = new THREE.Color( 0xff0000 );
@@ -28,8 +28,7 @@ class ThreeScene {
     this.animate()
   }
 
-  animate() {
-    console.log(this)
+  animate = () => {
     this.renderer.render(this.scene, this.camera)
     requestAnimationFrame(this.animate)
   }
