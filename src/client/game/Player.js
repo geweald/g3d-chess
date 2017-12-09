@@ -1,4 +1,4 @@
-import { PiecesEnum } from "./constants";
+import { PiecesEnum } from "../constants";
 
 class Player {
   constructor() {

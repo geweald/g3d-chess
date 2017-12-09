@@ -17,7 +17,7 @@ const addToRoom = (rooms, socket) => {
     freeRoom.addPlayer(socket);
     return freeRoom;
   }
-  const newRoom = new Room(socket);
+  const newRoom = Room(socket);
   newRoom.addPlayer(socket);
   rooms.push(newRoom);
   return newRoom;

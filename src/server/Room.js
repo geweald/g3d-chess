@@ -51,4 +51,4 @@ class Room {
   }
 }
 
-module.exports = Room;
+module.exports = socket => new Room(socket);

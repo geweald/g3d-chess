@@ -1,4 +1,5 @@
 import ThreeScene from "./ThreeScene";
+import Game from "./game";
 import * as io from "./api";
 
 io.onOponentJoined(() => console.log("Oponent joined"));
@@ -12,3 +13,5 @@ io.emitReady();
 
 const game = ThreeScene();
 game.init(document.body);
+
+Game();
