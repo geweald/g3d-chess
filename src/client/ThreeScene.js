@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { Board } from "./chessPiece/Board";
 import { CameraController } from "./utils/CameraController";
-
+import { COLORS } from './constants';
 class ThreeScene {
   raycaster = new THREE.Raycaster();
   scene = new THREE.Scene();
@@ -15,7 +15,7 @@ class ThreeScene {
     this.domElement = domElement;
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     domElement.appendChild(this.renderer.domElement);
-    this.scene.background = new THREE.Color(0xff0000);
+    this.scene.background = new THREE.Color(COLORS.Background);
     this.addLights();
     this.initBoard(gameBoard);
     const camera = new THREE.PerspectiveCamera(
@@ -28,8 +28,18 @@ class ThreeScene {
     this.domElement.addEventListener("mousedown", this.onMouseDown, false);
 
     this.animate();
+
+    window.addEventListener('resize', this.onWindowResize, false);
   };
 
+  onWindowResize = () => {
+
+    this.cameraController.camera.aspect = window.innerWidth / window.innerHeight;
+    this.cameraController.camera.updateProjectionMatrix();
+
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+
+  }
   animate = () => {
     this.renderer.render(this.scene, this.cameraController.camera);
     requestAnimationFrame(this.animate);
