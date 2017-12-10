@@ -34,7 +34,7 @@ class Game {
   }
 
   fieldChosen = position => {
-    if (!this.isLocalTurn || !this.started) return;
+    if (!this.isLocalTurn /*|| !this.started*/) return;
 
     const figure = this.board.getFigure(position);
     if (this.board.isFigure(position) && figure.color === this.localColor) {

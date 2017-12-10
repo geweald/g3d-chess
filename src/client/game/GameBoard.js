@@ -170,6 +170,7 @@ class GameBoard {
 
   canMove = (fromPoint, toPoint) => {
     const figure = this.getFigure(fromPoint);
+    if (figure === 0) return false;
     const possibleMoves = getPossibleMoves(
       figure,
       fromPoint,
@@ -205,6 +206,26 @@ class GameBoard {
   getFigure = ({ x, y }) => this.board[x][y];
 
   isFigure = position => this.getFigure(position) !== 0;
+
+  isChecked = color => {
+    let kingPosition;
+    this.board.forEach((row, i) => {
+      row.forEach((piece, j) => {
+        if (piece.color === color && piece.piece === Piece.King) {
+          kingPosition = { x: i, y: j }
+        }
+      })
+    });
+
+    this.board.forEach((row, i) => {
+      row.forEach((piece, j) => {
+        const end = this.canMove({ x: i, y: j }, kingPosition);
+        if (end)
+          return true;
+      })
+    });
+    return false;
+  }
 }
 
 export default () => new GameBoard();
