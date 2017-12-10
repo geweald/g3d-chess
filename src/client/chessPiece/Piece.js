@@ -1,16 +1,18 @@
 import * as THREE from "three";
-import { COLORS } from '../constants';
+import { COLORS } from "../constants";
+
+const loader = new THREE.JSONLoader();
+
 class Piece {
-  constructor() {
-    this.loader = new THREE.JSONLoader();
-  }
   load(x, z, rotation, scale, pieceColor, scene) {
-    this.loader.load(
+    loader.load(
       `../assets/${this.name}.json`,
-      (obj, mat) => {
+      obj => {
         this.model = new THREE.Mesh(
           obj,
-          new THREE.MeshLambertMaterial({ color: COLORS.piece[pieceColor] })
+          new THREE.MeshLambertMaterial({
+            color: COLORS.piece[pieceColor]
+          })
         );
         this.model.position.x = x;
         this.model.position.z = z;
@@ -20,7 +22,7 @@ class Piece {
         this.model.scale.z = scale;
         scene.add(this.model);
       },
-      xhr => { },
+      xhr => {},
       xhr => console.error("An error happened")
     );
   }

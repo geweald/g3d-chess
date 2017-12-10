@@ -6,11 +6,10 @@ import { Queen } from "./Queen";
 import { Knight } from "./Knight";
 import { Pawn } from "./Pawn";
 import { Rook } from "./Rook";
-import { COLORS } from '../constants'
-import { PiecesEnum as Piece, PieceColorEnum } from '../constants';
+import { COLORS } from "../constants";
+import { PiecesEnum as Piece, PieceColorEnum } from "../constants";
 
 class Board {
-
   constructor(scale, position, gameBoard, scene) {
     this.pieces = [];
     this.initPieces(gameBoard, scene);
@@ -19,7 +18,6 @@ class Board {
     for (var i = 0; i < this.board.length; ++i) {
       this.board[i] = new Array(8);
       for (let j = 0; j < this.board[i].length; ++j) {
-
         const fieldPosition = {
           x: position.x + scale * i,
           y: position.y,
@@ -32,11 +30,17 @@ class Board {
       }
     }
 
-    const boardFoundamentGeometry = new THREE.CubeGeometry(8.2 * scale, scale * 0.09, 8.2 * scale);
+    const boardFoundamentGeometry = new THREE.CubeGeometry(
+      8.2 * scale,
+      scale * 0.09,
+      8.2 * scale
+    );
     boardFoundamentGeometry.computeFaceNormals();
     boardFoundamentGeometry.computeVertexNormals();
 
-    const material = new THREE.MeshLambertMaterial({ color: COLORS.board.Fundament });
+    const material = new THREE.MeshLambertMaterial({
+      color: COLORS.board.Fundament
+    });
 
     this.boardFundament = new THREE.Mesh(boardFoundamentGeometry, material);
     this.boardFundament.position.x = 3.5;
@@ -78,9 +82,10 @@ class Board {
   };
 
   initPieces = (gameBoard, scene) => {
-    gameBoard.board.board.forEach((row, i) => {
+    gameBoard.board.forEach((row, i) => {
       row.forEach((pion, j) => {
-        const rotation = PieceColorEnum.White === pion.color ? -Math.PI / 2 : Math.PI / 2;
+        const rotation =
+          PieceColorEnum.White === pion.color ? -Math.PI / 2 : Math.PI / 2;
         switch (pion.piece) {
           case Piece.Pawn:
             const pawn = new Pawn(i, j, 0, pion.color, scene);
@@ -107,24 +112,39 @@ class Board {
             this.pieces.push(knight);
             break;
         }
-      })
-    })
-  }
+      });
+    });
+  };
+
+  resetPiecesPositions = gameBoard => {
+    let i = 0;
+    gameBoard.board.forEach((row, x) => {
+      row.forEach((figure, y) => {
+        if (!gameBoard.isFigure({ x, y })) return;
+        // this.pieces[i].model.position.x = x;
+        // this.pieces[i].model.position.z = y;
+        i += 1;
+      });
+    });
+  };
 
   clickableElements = () => {
     return [
-      ...this.pieces.map(p => p.model), ...this.board.reduce((arr, curr) => arr.concat(curr), [])
-    ]
-  }
+      ...this.pieces.map(p => p.model),
+      ...this.board.reduce((arr, curr) => arr.concat(curr), [])
+    ];
+  };
 
   updatePionPosition = (from, to) => {
-    const index = this.pieces.findIndex(e => e.position.x == from.x && e.position.z == from.z);
+    const index = this.pieces.findIndex(({ model }) => {
+      return model.position.x === from.x && model.position.z === from.z;
+    });
     if (index !== -1) {
       const piece = this.pieces[index];
-      piece.position.x = to.x;
-      piece.position.z = to.z;
+      piece.model.position.x = to.x;
+      piece.model.position.z = to.z;
     }
-  }
+  };
 }
 
 export { Board };

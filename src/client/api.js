@@ -6,7 +6,7 @@ export const emitReady = () => {
   socket.emit("ready");
 };
 
-// data = { fromPoint: [x,y], toPoint: [x,y] }
+// data = { fromPoint, toPoint }
 export const emitMove = data => {
   socket.emit("move", data);
 };
@@ -30,7 +30,7 @@ export const onOponentJoined = callback => {
   socket.on("oponentJoined", callback);
 };
 
-// callback = data => {}, gdzie data = { fromPoint: [x,y], toPoint: [x,y] }
+// callback = data => {}, gdzie data = { fromPoint, toPoint }
 export const onOponentMoved = callback => {
   socket.on("oponentMoved", callback);
 };

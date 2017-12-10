@@ -18,7 +18,6 @@ export const CAMERA_LOOK_AT = {
   z: 3.5
 };
 
-
 export const COLORS = {
   piece: {
     White: 0xffffff,
@@ -29,4 +28,4 @@ export const COLORS = {
     Black: 0xf4a460,
     Fundament: 0x000000
   }
-}
+};

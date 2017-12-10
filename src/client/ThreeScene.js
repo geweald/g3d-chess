@@ -3,15 +3,15 @@ import { Board } from "./chessPiece/Board";
 import { CameraController } from "./utils/CameraController";
 
 class ThreeScene {
-  constructor() {
-    this.scene = new THREE.Scene();
-
-
-    this.renderer = new THREE.WebGLRenderer();
-    this.renderer.shadowMap.enabled = true;
-  }
+  raycaster = new THREE.Raycaster();
+  scene = new THREE.Scene();
+  renderer = new THREE.WebGLRenderer();
+  mouseVector = new THREE.Vector2();
+  callbacks = [];
 
   init = (domElement, gameBoard) => {
+    this.renderer.shadowMap.enabled = true;
+
     this.domElement = domElement;
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     domElement.appendChild(this.renderer.domElement);
@@ -25,6 +25,7 @@ class ThreeScene {
       100
     );
     this.cameraController = new CameraController(camera, domElement);
+    this.domElement.addEventListener("mousedown", this.onMouseDown, false);
 
     this.animate();
   };
@@ -37,13 +38,12 @@ class ThreeScene {
   addLights = () => {
     const spotLight = new THREE.SpotLight(0xffffff);
     spotLight.position.set(0, 60, 0);
-
     spotLight.castShadow = true;
 
     this.scene.add(spotLight);
   };
 
-  initBoard = (gameBoard) => {
+  initBoard = gameBoard => {
     // todo do nowych zmiennych stalych gdzies
     const scale = 1;
     const boardPositon = {
@@ -55,33 +55,53 @@ class ThreeScene {
     this.board = new Board(scale, boardPositon, gameBoard, this.scene);
   };
 
+  reset = gameBoard => {
+    this.board.resetPiecesPositions(gameBoard);
+  };
 
-  updatePioPosition = (form, to) => {
-    this.board.updatePionPosition(from, to);
-  }
+  updatePioPosition = (from, to) => {
+    const newFrom = { x: from.x, z: from.y };
+    const newTo = { x: to.x, z: to.y };
+
+    this.board.updatePionPosition(newFrom, newTo);
+  };
 
   subscribeOnClick = callback => {
-    this.callback = callback;
-    this.domElement.addEventListener("mousedown", this.onMouseDown, false);
-  }
-  onMouseDown = (event) => {
-    const raycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
-    mouse.x = (event.clientX / this.renderer.domElement.clientWidth) * 2 - 1;
-    mouse.y = - (event.clientY / this.renderer.domElement.clientHeight) * 2 + 1;
+    this.callbacks.push(callback);
+  };
 
-    raycaster.setFromCamera(mouse, this.cameraController.camera);
-    const intersects = raycaster.intersectObjects(this.scene.children, false);
+  unsubscribeOnClick = callback => {
+    this.callbacks = this.callbacks.filter(cb => cb !== callback);
+  };
+
+  onMouseDown = event => {
+    if (!this.callbacks.length) return;
+
+    this.mouseVector.x =
+      event.clientX / this.renderer.domElement.clientWidth * 2 - 1;
+    this.mouseVector.y =
+      -(event.clientY / this.renderer.domElement.clientHeight) * 2 + 1;
+
+    this.raycaster.setFromCamera(
+      this.mouseVector,
+      this.cameraController.camera
+    );
+    const intersects = this.raycaster.intersectObjects(
+      this.scene.children,
+      false
+    );
     if (intersects.length > 0) {
       const inter = intersects[0].object;
       const clickable = this.board.clickableElements();
       const index = clickable.findIndex(e => e === inter);
       if (index !== -1) {
         const element = clickable[index];
-        this.callback(element.position.x, element.position.z);
+        this.callbacks.forEach(cb =>
+          cb({ x: element.position.x, y: element.position.z })
+        );
       }
     }
-  }
+  };
 }
 
 export default () => new ThreeScene();
