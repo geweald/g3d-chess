@@ -147,7 +147,7 @@ class Board {
   };
 
   updatePionColor = (position, color) => {
-    const index = this.pieces.findIndex(p => p.mode.position.x == position.x && p.mode.position.z = position.y);
+    const index = this.pieces.findIndex(p => p.model.position.x == position.x && p.model.position.z == position.y);
     if (index !== -1) {
       const piece = this.pieces[index];
       piece.setColor(color);

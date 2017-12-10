@@ -27,9 +27,9 @@ class Piece {
     );
   }
 
-  setColor(color) => {
-  this.model.material.color.setHex(color);
-}
+  setColor = (color) => {
+    this.model.material.color.setHex(color);
+  }
 }
 
 export { Piece };
