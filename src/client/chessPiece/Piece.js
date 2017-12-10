@@ -22,10 +22,14 @@ class Piece {
         this.model.scale.z = scale;
         scene.add(this.model);
       },
-      xhr => {},
+      xhr => { },
       xhr => console.error("An error happened")
     );
   }
+
+  setColor(color) => {
+  this.model.material.color.setHex(color);
+}
 }
 
 export { Piece };

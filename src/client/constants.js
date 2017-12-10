@@ -21,7 +21,9 @@ export const CAMERA_LOOK_AT = {
 export const COLORS = {
   piece: {
     White: 0xffffff,
-    Black: 0xf4a460
+    Black: 0xf4a460,
+    WhiteSelected: 0xdddddd,
+    BlackSelected: 0xd29238
   },
   board: {
     White: 0xffffff,

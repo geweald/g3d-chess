@@ -102,6 +102,10 @@ class ThreeScene {
       }
     }
   };
+
+  updatePionColor = (position, color) => {
+    this.board.updatePionColor(position, color);
+  }
 }
 
 export default () => new ThreeScene();
