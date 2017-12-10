@@ -1,12 +1,14 @@
 import Board from "./GameBoard";
 import Scene from "../ThreeScene";
 import * as io from "../api";
-import { PieceColorEnum, COLORS } from "../constants";
+import { PieceColorEnum, COLORS, PiecesEnum } from "../constants";
 
 class Game {
   selected = { figure: null, position: {} };
   started = false;
   isLocalTurn = false;
+  onMoveCallbacks = [];
+  onGameOverCallbacks = [];
 
   constructor(domElement) {
     this.board = Board();
@@ -28,7 +30,6 @@ class Game {
     });
 
     io.onOponentLeft(() => {
-      console.log("Oponent has left the game.");
       this.started = false;
     });
   }
@@ -60,18 +61,33 @@ class Game {
       this.selected.figure = null;
 
       io.emitMove({ fromPoint: this.selected.position, toPoint: position });
+      this.onMoveCallbacks.forEach(cb => cb());
     }
   };
 
   moveFigure = (from, to) => {
+    const toField = this.board.getFigure(to);
     const { success, killed } = this.board.tryMoveFigure(from, to);
-    if (success) {
-      if (killed) {
-        this.scene.updatePioPosition(to, { x: 1000, y: 1000 });
+    if (!success) return;
+
+    if (killed) {
+      this.scene.updatePioPosition(to, { x: 1000, y: 1000 });
+      if (toField.piece === PiecesEnum.King) {
+        const isWinner = this.localColor === toField.color;
+        io.emitGameOver();
+        this.onGameOverCallbacks.forEach(cb => cb(isWinner));
       }
-      this.scene.updatePioPosition(from, to);
-      this.isLocalTurn = !this.isLocalTurn;
     }
+    this.scene.updatePioPosition(from, to);
+    this.isLocalTurn = !this.isLocalTurn;
+  };
+
+  onLocalMove = callback => {
+    this.onMoveCallbacks.push(callback);
+  };
+
+  onGameOver = callback => {
+    this.onGameOverCallbacks.push(callback);
   };
 
   resetGame = () => {

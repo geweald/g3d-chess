@@ -15,7 +15,6 @@ export const emitGameOver = () => {
   socket.emit("gameOver");
 };
 
-// callback = amIStarting => {}
 export const onStart = callback => {
   socket.on("start", id => {
     callback(id === socket.id);
@@ -26,11 +25,11 @@ export const onOponentLeft = callback => {
   socket.on("oponentLeft", callback);
 };
 
-export const onOponentJoined = callback => {
-  socket.on("oponentJoined", callback);
-};
-
 // callback = data => {}, gdzie data = { fromPoint, toPoint }
 export const onOponentMoved = callback => {
   socket.on("oponentMoved", callback);
+};
+
+export const onWaitingForOponent = callback => {
+  socket.on("waitingForOponent", callback);
 };

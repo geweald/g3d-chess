@@ -38,28 +38,28 @@ const createGameBoard = () => {
 
 const getPossibleKingdMoves = ({ x, y }, board) => {
   const possibleMoves = [
-    pointToString({ x: x + 1, y: y + 1 }),
-    pointToString({ x: x + 1, y: y }),
-    pointToString({ x: x + 1, y: y - 1 }),
-    pointToString({ x: x, y: y + 1 }),
-    pointToString({ x: x, y: y - 1 }),
-    pointToString({ x: x - 1, y: y - 1 }),
-    pointToString({ x: x - 1, y: y }),
-    pointToString({ x: x - 1, y: y + 1 })
+    { x: x + 1, y: y + 1 },
+    { x: x + 1, y: y },
+    { x: x + 1, y: y - 1 },
+    { x: x, y: y + 1 },
+    { x: x, y: y - 1 },
+    { x: x - 1, y: y - 1 },
+    { x: x - 1, y: y },
+    { x: x - 1, y: y + 1 }
   ];
   return possibleMoves;
 };
 
 const getPossibleKnightdMoves = ({ x, y }, board) => {
   const possibleMoves = [
-    pointToString({ x: x + 1, y: y + 2 }),
-    pointToString({ x: x + 1, y: y - 2 }),
-    pointToString({ x: x + 2, y: y - 1 }),
-    pointToString({ x: x - 2, y: y - 1 }),
-    pointToString({ x: x + 2, y: y + 1 }),
-    pointToString({ x: x - 2, y: y + 1 }),
-    pointToString({ x: x - 1, y: y + 2 }),
-    pointToString({ x: x - 1, y: y - 2 })
+    { x: x + 1, y: y + 2 },
+    { x: x + 1, y: y - 2 },
+    { x: x + 2, y: y - 1 },
+    { x: x - 2, y: y - 1 },
+    { x: x + 2, y: y + 1 },
+    { x: x - 2, y: y + 1 },
+    { x: x - 1, y: y + 2 },
+    { x: x - 1, y: y - 2 }
   ];
   return possibleMoves;
 };
@@ -67,19 +67,19 @@ const getPossibleKnightdMoves = ({ x, y }, board) => {
 const getPossibleRookdMoves = ({ x, y }, board) => {
   const possibleMoves = [];
   for (let i = x + 1; i < 8; ++i) {
-    possibleMoves.push(pointToString({ x: i, y: y }));
+    possibleMoves.push({ x: i, y: y });
     if (board[i][y] !== 0) break;
   }
   for (let i = x - 1; i >= 0; --i) {
-    possibleMoves.push(pointToString({ x: i, y: y }));
+    possibleMoves.push({ x: i, y: y });
     if (board[i][y] !== 0) break;
   }
   for (let j = y - 1; j >= 0; --j) {
-    possibleMoves.push(pointToString({ x: x, y: j }));
+    possibleMoves.push({ x: x, y: j });
     if (board[x][j] !== 0) break;
   }
   for (let j = y + 1; j < 8; ++j) {
-    possibleMoves.push(pointToString({ x: x, y: j }));
+    possibleMoves.push({ x: x, y: j });
     if (board[x][j] !== 0) break;
   }
   return possibleMoves;
@@ -88,19 +88,19 @@ const getPossibleRookdMoves = ({ x, y }, board) => {
 const getPossibleBishopdMoves = ({ x, y }, board) => {
   const possibleMoves = [];
   for (let i = x + 1, j = y + 1; i < 8 && j < 8; ++i, ++j) {
-    possibleMoves.push(pointToString({ x: i, y: j }));
+    possibleMoves.push({ x: i, y: j });
     if (board[i][j] !== 0) break;
   }
   for (let i = x - 1, j = y - 1; i >= 0 && j >= 0; --i, --j) {
-    possibleMoves.push(pointToString({ x: i, y: j }));
+    possibleMoves.push({ x: i, y: j });
     if (board[i][j] !== 0) break;
   }
   for (let i = x + 1, j = y - 1; i < 8 && j >= 0; ++i, --j) {
-    possibleMoves.push(pointToString({ x: i, y: j }));
+    possibleMoves.push({ x: i, y: j });
     if (board[i][j] !== 0) break;
   }
   for (let i = x - 1, j = y + 1; i >= 0 && j < 8; --i, ++j) {
-    possibleMoves.push(pointToString({ x: i, y: j }));
+    possibleMoves.push({ x: i, y: j });
     if (board[i][j] !== 0) break;
   }
   return possibleMoves;
@@ -120,17 +120,17 @@ const getPossiblePawnMovesColor = (frontOne, { x, y }, board) => {
     x + 2 * frontOne &&
     board[x + 2 * frontOne][y] === 0
   ) {
-    possibleMoves.push(pointToString({ x: x + 2 * frontOne, y: y }));
+    possibleMoves.push({ x: x + 2 * frontOne, y: y });
   }
   if (x + frontOne < 8 && x + frontOne >= 0) {
     if (board[x + frontOne][y] === 0) {
-      possibleMoves.push(pointToString({ x: x + frontOne, y: y }));
+      possibleMoves.push({ x: x + frontOne, y: y });
     }
     if (board[x + frontOne][y + 1] !== 0) {
-      possibleMoves.push(pointToString({ x: x + frontOne, y: y + 1 }));
+      possibleMoves.push({ x: x + frontOne, y: y + 1 });
     }
     if (board[x + frontOne][y - 1] !== 0) {
-      possibleMoves.push(pointToString({ x: x + frontOne, y: y - 1 }));
+      possibleMoves.push({ x: x + frontOne, y: y - 1 });
     }
   }
   return possibleMoves;
@@ -169,20 +169,20 @@ class GameBoard {
   };
 
   canMove = (fromPoint, toPoint) => {
-    const figure = this.getFigure(fromPoint);
-    if (figure === 0) return false;
-    const possibleMoves = getPossibleMoves(
-      figure,
-      fromPoint,
-      this.board
-    ).filter(pointString => {
-      const point = stringToPoint(pointString);
-      if (!isPointOnBoard(point)) return false;
-      const pointFigure = this.getFigure(point);
-      return pointFigure === 0 || pointFigure.color !== figure.color;
-    });
+    const field = this.getFigure(fromPoint);
+    if (field === 0) return false;
 
-    return possibleMoves.includes(pointToString(toPoint));
+    const possibleMoves = getPossibleMoves(field, fromPoint, this.board).filter(
+      point => {
+        if (!isPointOnBoard(point)) return false;
+        const pointField = this.getFigure(point);
+        return pointField === 0 || pointField.color !== field.color;
+      }
+    );
+
+    return possibleMoves
+      .map(point => pointToString(point))
+      .includes(pointToString(toPoint));
   };
 
   getFigures = color => {
@@ -212,20 +212,19 @@ class GameBoard {
     this.board.forEach((row, i) => {
       row.forEach((piece, j) => {
         if (piece.color === color && piece.piece === Piece.King) {
-          kingPosition = { x: i, y: j }
+          kingPosition = { x: i, y: j };
         }
-      })
+      });
     });
 
     this.board.forEach((row, i) => {
       row.forEach((piece, j) => {
         const end = this.canMove({ x: i, y: j }, kingPosition);
-        if (end)
-          return true;
-      })
+        if (end) return true;
+      });
     });
     return false;
-  }
+  };
 }
 
 export default () => new GameBoard();

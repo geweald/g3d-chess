@@ -27,12 +27,13 @@ io.on("connection", socket => {
   const room = addToRoom(rooms, socket);
 
   socket.join(room.id);
-  socket.broadcast.to(room.id).emit("oponentJoined");
 
   socket.on("ready", () => {
     room.setPlayerReady(socket);
     if (room.arePlayersReady()) {
       io.in(room.id).emit("start", room.getNextPlayerId());
+    } else {
+      socket.emit("waitingForOponent");
     }
   });
 
