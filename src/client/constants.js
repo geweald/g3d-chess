@@ -29,5 +29,6 @@ export const COLORS = {
     White: 0xffffff,
     Black: 0xf4a460,
     Fundament: 0x000000
-  }
+  },
+  Background: 0xff69b4
 };
