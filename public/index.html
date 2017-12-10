@@ -13,7 +13,7 @@
     }
 
     #menu {
-      display: none;
+      display: flex;
       justify-content: center;
       align-items: center;
       position: fixed;
@@ -21,7 +21,8 @@
       left: 0;
       bottom: 0;
       right: 0;
-      background: rgba(0, 0, 0, 0.5)
+      background: rgba(255, 255, 255, 0.7);
+      transition: all 0.3s ease;
     }
 
     #info {
@@ -49,6 +50,28 @@
       text-transform: uppercase;
       text-shadow: 2px 2px 14px rgba(150, 150, 150, 1);
     }
+
+    .btn {
+      background: #7634d9;
+      background-image: linear-gradient(to bottom, #7634d9, #b82b2b);
+      border-radius: 41px;
+      box-shadow: 0px 1px 15px rgb(61, 37, 37);
+      border: 0;
+      outline: 0;
+      color: #ffffff;
+      font-size: 30px;
+      padding: 20px 40px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #ff0073;
+      background-image: linear-gradient(to bottom, #ff0073, #6e34d9);
+      cursor: pointer;
+      transform: scale(1.1);
+      text-decoration: none;
+    }
   </style>
 </head>
 
@@ -66,7 +89,7 @@
     </div>
   </div>
   <div id="menu">
-    <button id="start-button">Start</button>
+    <button class="btn" id="start-button">Start</button>
   </div>
 
   <script src="bundle.js" type="text/javascript"></script>

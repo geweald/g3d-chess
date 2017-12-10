@@ -1,5 +1,6 @@
 import Game from "./game";
-import * as api from './api';
+import * as io from "./api";
 
 Game(document.getElementById("game"));
-api.emitReady();
+
+io.emitReady();

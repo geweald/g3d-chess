@@ -1,7 +1,7 @@
 import Board from "./GameBoard";
 import Scene from "../ThreeScene";
 import * as io from "../api";
-import { PieceColorEnum } from "../constants";
+import { PieceColorEnum, COLORS } from "../constants";
 
 class Game {
   selected = { figure: null, position: {} };
@@ -34,19 +34,31 @@ class Game {
   }
 
   fieldChosen = position => {
-    if (!this.isLocalTurn /*|| !this.started*/) return;
+    if (!this.isLocalTurn || !this.started) return;
 
     const figure = this.board.getFigure(position);
     if (this.board.isFigure(position) && figure.color === this.localColor) {
       if (figure.color === this.localColor) {
+        if (this.selected.figure) {
+          this.scene.updatePionColor(
+            this.selected.position,
+            COLORS.piece[this.localColor]
+          );
+        }
         this.selected = { figure, position };
+        this.scene.updatePionColor(
+          position,
+          COLORS.pieceSelected[this.localColor]
+        );
       }
     } else if (
       this.selected.figure &&
       this.board.canMove(this.selected.position, position)
     ) {
       this.moveFigure(this.selected.position, position);
+      this.scene.updatePionColor(position, COLORS.piece[this.localColor]);
       this.selected.figure = null;
+
       io.emitMove({ fromPoint: this.selected.position, toPoint: position });
     }
   };
