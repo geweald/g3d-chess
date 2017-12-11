@@ -46,8 +46,8 @@ io.onStart(isWhite => {
   $menu.style.display = "none";
   $localPlayer.style.opacity = isWhite ? 1 : 0.3;
   $remotePlayer.style.opacity = !isWhite ? 1 : 0.3;
-  $localCircle.style.background = isWhite ? "white" : "brown";
-  $remoteCircle.style.background = !isWhite ? "white" : "brown";
+  $localCircle.style.background = isWhite ? "white" : "#333";
+  $remoteCircle.style.background = !isWhite ? "white" : "#333";
 });
 
 io.onOponentLeft(() => {

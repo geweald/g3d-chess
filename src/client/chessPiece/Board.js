@@ -38,8 +38,9 @@ class Board {
     boardFoundamentGeometry.computeFaceNormals();
     boardFoundamentGeometry.computeVertexNormals();
 
-    const material = new THREE.MeshLambertMaterial({
-      color: COLORS.board.Fundament
+    const material = new THREE.MeshPhongMaterial({
+      color: COLORS.board.Fundament,
+      shininess: 21
     });
 
     this.boardFundament = new THREE.Mesh(boardFoundamentGeometry, material);
@@ -62,7 +63,10 @@ class Board {
     const geometry = new THREE.CubeGeometry(scale, scale * 0.1, scale);
     geometry.computeFaceNormals();
     geometry.computeVertexNormals();
-    const material = new THREE.MeshLambertMaterial({ color: fieldColor });
+    const material = new THREE.MeshPhongMaterial({
+      color: fieldColor,
+      shininess: 34
+    });
     material.side = THREE.DoubleSide;
     const cube = new THREE.Mesh(geometry, material);
     cube.position.x = position.x;
@@ -120,9 +124,9 @@ class Board {
     let i = 0;
     gameBoard.board.forEach((row, x) => {
       row.forEach((figure, y) => {
-        if (!gameBoard.isFigure({ x, y })) return;
-        // this.pieces[i].model.position.x = x;
-        // this.pieces[i].model.position.z = y;
+        if (!this.pieces[i].model || !gameBoard.isFigure({ x, y })) return;
+        this.pieces[i].model.position.x = x;
+        this.pieces[i].model.position.z = y;
         i += 1;
       });
     });
@@ -147,12 +151,14 @@ class Board {
   };
 
   updatePionColor = (position, color) => {
-    const index = this.pieces.findIndex(p => p.model.position.x == position.x && p.model.position.z == position.y);
+    const index = this.pieces.findIndex(
+      p => p.model.position.x == position.x && p.model.position.z == position.y
+    );
     if (index !== -1) {
       const piece = this.pieces[index];
       piece.setColor(color);
     }
-  }
+  };
 }
 
 export { Board };

@@ -73,7 +73,7 @@ class Game {
     if (killed) {
       this.scene.updatePioPosition(to, { x: 1000, y: 1000 });
       if (toField.piece === PiecesEnum.King) {
-        const isWinner = this.localColor === toField.color;
+        const isWinner = this.localColor !== toField.color;
         io.emitGameOver();
         this.onGameOverCallbacks.forEach(cb => cb(isWinner));
       }

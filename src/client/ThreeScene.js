@@ -1,21 +1,19 @@
 import * as THREE from "three";
 import { Board } from "./chessPiece/Board";
 import { CameraController } from "./utils/CameraController";
-import { COLORS } from './constants';
+import { COLORS } from "./constants";
 class ThreeScene {
   raycaster = new THREE.Raycaster();
   scene = new THREE.Scene();
-  renderer = new THREE.WebGLRenderer();
+  renderer = new THREE.WebGLRenderer({ alpha: true });
   mouseVector = new THREE.Vector2();
   callbacks = [];
 
   init = (domElement, gameBoard) => {
-    this.renderer.shadowMap.enabled = true;
-
     this.domElement = domElement;
+
+    this.renderer.shadowMap.enabled = true;
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    domElement.appendChild(this.renderer.domElement);
-    this.scene.background = new THREE.Color(COLORS.Background);
     this.addLights();
     this.initBoard(gameBoard);
     const camera = new THREE.PerspectiveCamera(
@@ -25,21 +23,22 @@ class ThreeScene {
       100
     );
     this.cameraController = new CameraController(camera, domElement);
+
+    this.domElement.appendChild(this.renderer.domElement);
     this.domElement.addEventListener("mousedown", this.onMouseDown, false);
 
     this.animate();
 
-    window.addEventListener('resize', this.onWindowResize, false);
+    window.addEventListener("resize", this.onWindowResize, false);
   };
 
   onWindowResize = () => {
-
-    this.cameraController.camera.aspect = window.innerWidth / window.innerHeight;
+    this.cameraController.camera.aspect =
+      window.innerWidth / window.innerHeight;
     this.cameraController.camera.updateProjectionMatrix();
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-
-  }
+  };
   animate = () => {
     this.renderer.render(this.scene, this.cameraController.camera);
     requestAnimationFrame(this.animate);
@@ -115,7 +114,7 @@ class ThreeScene {
 
   updatePionColor = (position, color) => {
     this.board.updatePionColor(position, color);
-  }
+  };
 }
 
 export default () => new ThreeScene();

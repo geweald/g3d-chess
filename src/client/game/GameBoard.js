@@ -117,7 +117,8 @@ const getPossiblePawnMovesColor = (frontOne, { x, y }, board) => {
   const possibleMoves = [];
   if (
     (x === 1 || x == 6) &&
-    x + 2 * frontOne &&
+    x + 2 * frontOne >= 0 &&
+    x + 2 * frontOne < 8 &&
     board[x + 2 * frontOne][y] === 0
   ) {
     possibleMoves.push({ x: x + 2 * frontOne, y: y });
@@ -206,25 +207,6 @@ class GameBoard {
   getFigure = ({ x, y }) => this.board[x][y];
 
   isFigure = position => this.getFigure(position) !== 0;
-
-  isChecked = color => {
-    let kingPosition;
-    this.board.forEach((row, i) => {
-      row.forEach((piece, j) => {
-        if (piece.color === color && piece.piece === Piece.King) {
-          kingPosition = { x: i, y: j };
-        }
-      });
-    });
-
-    this.board.forEach((row, i) => {
-      row.forEach((piece, j) => {
-        const end = this.canMove({ x: i, y: j }, kingPosition);
-        if (end) return true;
-      });
-    });
-    return false;
-  };
 }
 
 export default () => new GameBoard();

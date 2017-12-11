@@ -10,8 +10,10 @@ class Piece {
       obj => {
         this.model = new THREE.Mesh(
           obj,
-          new THREE.MeshLambertMaterial({
-            color: COLORS.piece[pieceColor]
+          new THREE.MeshPhongMaterial({
+            color: COLORS.piece[pieceColor],
+            specular: 0x212121,
+            shininess: 100
           })
         );
         this.model.position.x = x;
@@ -22,14 +24,14 @@ class Piece {
         this.model.scale.z = scale;
         scene.add(this.model);
       },
-      xhr => { },
+      xhr => {},
       xhr => console.error("An error happened")
     );
   }
 
-  setColor = (color) => {
+  setColor = color => {
     this.model.material.color.setHex(color);
-  }
+  };
 }
 
 export { Piece };
