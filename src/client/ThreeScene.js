@@ -1,7 +1,8 @@
 import * as THREE from "three";
 import { Board } from "./chessPiece/Board";
-import { CameraController } from "./utils/CameraController";
+import { CameraController } from "./helpers/CameraController";
 import { COLORS } from "./constants";
+
 class ThreeScene {
   raycaster = new THREE.Raycaster();
   scene = new THREE.Scene();
@@ -39,6 +40,7 @@ class ThreeScene {
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   };
+
   animate = () => {
     this.renderer.render(this.scene, this.cameraController.camera);
     requestAnimationFrame(this.animate);
@@ -53,7 +55,6 @@ class ThreeScene {
   };
 
   initBoard = gameBoard => {
-    // todo do nowych zmiennych stalych gdzies
     const scale = 1;
     const boardPositon = {
       x: 0,
@@ -95,16 +96,10 @@ class ThreeScene {
       this.mouseVector,
       this.cameraController.camera
     );
-    const intersects = this.raycaster.intersectObjects(
-      this.scene.children,
-      false
-    );
+    const intersects = this.raycaster.intersectObjects(this.scene.children);
     if (intersects.length > 0) {
-      const inter = intersects[0].object;
-      const clickable = this.board.clickableElements();
-      const index = clickable.findIndex(e => e === inter);
-      if (index !== -1) {
-        const element = clickable[index];
+      const element = intersects[0].object;
+      if (element) {
         this.callbacks.forEach(cb =>
           cb({ x: element.position.x, y: element.position.z })
         );

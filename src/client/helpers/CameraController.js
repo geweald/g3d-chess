@@ -10,21 +10,18 @@ class CameraController {
     };
 
     this.camera = camera;
-    this.camera.position.x = CAMERA_LOOK_AT.x;
-    this.camera.position.y = CAMERA_LOOK_AT.y;
-    this.camera.position.z = CAMERA_LOOK_AT.z;
 
     this.calculateCameraPosition();
     this.registerMouseEvents(domElement);
   }
 
   registerMouseEvents = domElement => {
-    domElement.addEventListener("mousedown", this.onMouseDonw, false);
+    domElement.addEventListener("mousedown", this.onMouseDown, false);
     domElement.addEventListener("mouseup", this.onMouseUp, false);
-    domElement.addEventListener("mousemove", this.onMouseOver, true);
+    domElement.addEventListener("mousemove", this.onMouseMove, true);
   };
 
-  onMouseDonw = event => {
+  onMouseDown = event => {
     this.mouseDown = true;
     this.mousePosition = {
       x: event.layerX,
@@ -38,7 +35,7 @@ class CameraController {
     this.mouseDown = false;
   };
 
-  onMouseOver = event => {
+  onMouseMove = event => {
     if (!this.mouseDown) {
       return;
     }
@@ -60,15 +57,15 @@ class CameraController {
     this.camera.position.x =
       CAMERA_LOOK_AT.x +
       this.cameraRadius *
-      Math.sin(theta * Math.PI / 360) *
-      Math.cos(phi * Math.PI / 360);
+        Math.sin(theta * Math.PI / 360) *
+        Math.cos(phi * Math.PI / 360);
     this.camera.position.y =
       CAMERA_LOOK_AT.y + this.cameraRadius * Math.sin(phi * Math.PI / 360);
     this.camera.position.z =
       CAMERA_LOOK_AT.z +
       this.cameraRadius *
-      Math.cos(theta * Math.PI / 360) *
-      Math.cos(phi * Math.PI / 360);
+        Math.cos(theta * Math.PI / 360) *
+        Math.cos(phi * Math.PI / 360);
     this.camera.lookAt(CAMERA_LOOK_AT.x, CAMERA_LOOK_AT.y, CAMERA_LOOK_AT.z);
     this.camera.updateMatrix();
   };

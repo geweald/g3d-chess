@@ -132,13 +132,6 @@ class Board {
     });
   };
 
-  clickableElements = () => {
-    return [
-      ...this.pieces.map(p => p.model),
-      ...this.board.reduce((arr, curr) => arr.concat(curr), [])
-    ];
-  };
-
   updatePionPosition = (from, to) => {
     const index = this.pieces.findIndex(({ model }) => {
       return model.position.x === from.x && model.position.z === from.z;
